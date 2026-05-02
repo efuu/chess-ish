@@ -1,36 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { socket, emit } from './socket.js';
 import Lobby from './Lobby.jsx';
 import Room from './Room.jsx';
-import { dealForSeed } from './deck.js';
 
 const SESSION_KEY = 'chessish_session';
 
 function loadSession() {
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    if (!raw) return null;
-    const s = JSON.parse(raw);
-    if (!s.code || !s.slot) return null;
-    return { ...s, hand: dealForSeed(s.code, s.slot) };
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
   } catch {
     return null;
   }
 }
 
 function saveSession(session) {
-  if (session) {
-    const { code, name, slot } = session;
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ code, name, slot }));
-  } else {
-    localStorage.removeItem(SESSION_KEY);
-  }
+  if (session) localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  else localStorage.removeItem(SESSION_KEY);
 }
 
 export default function App() {
   const [session, setSession] = useState(loadSession());
+  const [connected, setConnected] = useState(socket.connected);
 
-  function handleStart({ code, name, slot }) {
-    const next = { code, name, slot, hand: dealForSeed(code, slot) };
+  useEffect(() => {
+    const onConnect = () => setConnected(true);
+    const onDisconnect = () => setConnected(false);
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
+
+  // Auto-reconnect to a saved room when the socket connects.
+  useEffect(() => {
+    if (!connected || !session) return;
+    let cancelled = false;
+    (async () => {
+      const res = await emit('reconnectRoom', { code: session.code, playerId: session.playerId });
+      if (cancelled) return;
+      if (!res?.ok) {
+        saveSession(null);
+        setSession(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [connected, session]);
+
+  function handleJoined({ code, playerId, name }) {
+    const next = { code, playerId, name };
     saveSession(next);
     setSession(next);
   }
@@ -48,7 +69,7 @@ export default function App() {
       {session ? (
         <Room session={session} onLeave={handleLeave} />
       ) : (
-        <Lobby onStart={handleStart} />
+        <Lobby onJoined={handleJoined} connected={connected} />
       )}
     </div>
   );

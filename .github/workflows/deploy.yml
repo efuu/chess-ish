@@ -28,6 +28,8 @@ jobs:
         working-directory: client
       - run: npm run build
         working-directory: client
+        env:
+          VITE_SERVER_URL: ${{ secrets.VITE_SERVER_URL }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

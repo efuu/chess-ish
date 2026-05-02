@@ -238,6 +238,101 @@ input:focus {
   line-height: 1.4;
 }
 
+.opponent-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 8px 14px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink-faded);
+  margin-bottom: 8px;
+}
+
+.bank {
+  background: var(--paper-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.bank-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 10px;
+}
+
+.bank-card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-left: 5px solid var(--ink-faded);
+  border-radius: 6px;
+  padding: 10px 12px 12px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.bank-card.mine {
+  border-left-color: var(--accent);
+}
+.bank-card.theirs {
+  border-left-color: var(--warn);
+}
+.bank-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.bank-card-rule {
+  color: var(--ink-soft);
+}
+.undo-btn {
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  min-height: 32px;
+}
+
+.card-use {
+  margin-top: 10px;
+  width: 100%;
+  font-size: 14px;
+  padding: 9px 12px;
+  min-height: 40px;
+}
+
+.small {
+  font-size: 12px;
+}
+
+.error.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f1d9cc;
+  border: 1px solid var(--warn);
+  padding: 8px 14px;
+  border-radius: 6px;
+  z-index: 100;
+}
+
 .waiting h2 {
   margin: 0 0 8px;
   font-weight: 700;
@@ -270,12 +365,15 @@ input:focus {
   background: var(--paper);
   border: 1.5px solid var(--line);
   border-radius: 8px;
-  padding: 14px 14px 16px;
+  padding: 14px 14px 14px;
   position: relative;
   min-height: 200px;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
+}
+.card .card-rule {
+  flex: 1;
 }
 .card-name {
   font-weight: 700;
@@ -334,6 +432,10 @@ input:focus {
     font-size: 16px;
   }
   .share-hint {
+    font-size: 13px;
+  }
+  .opponent-strip {
+    flex-wrap: wrap;
     font-size: 13px;
   }
 }

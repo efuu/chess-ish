@@ -1,23 +1,33 @@
 import { useState } from 'react';
-import { generateRoomCode, normalizeRoomCode } from './deck.js';
+import { emit } from './socket.js';
+import { normalizeRoomCode } from './deck.js';
 
-export default function Lobby({ onStart }) {
+export default function Lobby({ onJoined, connected }) {
   const [name, setName] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
-  function create() {
+  async function create() {
     if (!name.trim()) return setError('Enter your name first.');
     setError('');
-    onStart({ code: generateRoomCode(), name: name.trim(), slot: 'creator' });
+    setBusy(true);
+    const res = await emit('createRoom', { name: name.trim() });
+    setBusy(false);
+    if (res?.ok) onJoined({ code: res.code, playerId: res.playerId, name: name.trim() });
+    else setError(res?.error || 'Could not create room');
   }
 
-  function join() {
+  async function join() {
     if (!name.trim()) return setError('Enter your name first.');
     const code = normalizeRoomCode(joinCode);
     if (code.length !== 4) return setError('Room code is 4 digits.');
     setError('');
-    onStart({ code, name: name.trim(), slot: 'joiner' });
+    setBusy(true);
+    const res = await emit('joinRoom', { code, name: name.trim() });
+    setBusy(false);
+    if (res?.ok) onJoined({ code: res.code, playerId: res.playerId, name: name.trim() });
+    else setError(res?.error || 'Could not join room');
   }
 
   return (
@@ -32,7 +42,9 @@ export default function Lobby({ onStart }) {
             maxLength={24}
           />
         </label>
-        <button onClick={create}>Create Game</button>
+        <button onClick={create} disabled={busy || !connected}>
+          Create Game
+        </button>
         <div className="divider">or join one</div>
         <label>
           Room code
@@ -46,9 +58,10 @@ export default function Lobby({ onStart }) {
             style={{ letterSpacing: 6, fontSize: 22, textAlign: 'center' }}
           />
         </label>
-        <button onClick={join} className="ghost">
+        <button onClick={join} disabled={busy || !connected} className="ghost">
           Join Game
         </button>
+        {!connected && <div className="muted small">Connecting to server…</div>}
         {error && <div className="error">{error}</div>}
       </div>
     </div>
