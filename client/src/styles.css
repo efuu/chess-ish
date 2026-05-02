@@ -1,0 +1,340 @@
+/* Cozy chess theme: solid colors, clean sans, real-card look. */
+:root {
+  --table: #d6c39a;       /* warm tan tabletop */
+  --table-edge: #b89970;
+  --paper: #fdfcf6;       /* card face */
+  --paper-soft: #f5efde;  /* panel face */
+  --ink: #1a1a1a;
+  --ink-soft: #4a4234;
+  --ink-faded: #6b5f4a;
+  --line: #2a1f12;
+  --line-soft: #6b5436;
+  --accent: #2f4a2a;      /* deep moss button */
+  --accent-dark: #213419;
+  --warn: #8a3a1c;
+  --ok: #3d6a2c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--table);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  min-height: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.2px;
+  color: var(--ink);
+}
+
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--paper-soft);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-soft);
+}
+.pill.ok {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: #e6efd7;
+}
+.pill.bad {
+  color: var(--warn);
+  border-color: var(--warn);
+  background: #f1d9cc;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent-dark);
+  border-radius: 4px;
+  padding: 11px 18px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+button:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+button.ghost {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
+}
+button.ghost:hover:not(:disabled) {
+  background: var(--paper-soft);
+}
+button.small {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+input {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 16px;
+  min-height: 44px;
+  width: 100%;
+}
+input:focus {
+  outline: none;
+  border-color: var(--line);
+}
+
+.panel {
+  background: var(--paper-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.muted {
+  color: var(--ink-faded);
+}
+
+/* Lobby */
+.lobby {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.lobby-card {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 22px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lobby-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.divider {
+  text-align: center;
+  color: var(--ink-faded);
+  font-size: 13px;
+  margin: 4px 0;
+  position: relative;
+  font-weight: 600;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  display: inline-block;
+  width: 70px;
+  height: 1px;
+  background: var(--line-soft);
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+/* Room */
+.room-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+.room-bar-item {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.code-pill {
+  background: var(--paper-soft);
+  color: var(--ink);
+  border: 1.5px dashed var(--accent);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+  cursor: pointer;
+  min-height: 44px;
+  margin-left: auto;
+}
+.code-pill:hover {
+  background: var(--paper);
+}
+.code-hint {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: var(--ink-faded);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+.share-hint {
+  margin: 0 4px 14px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.waiting h2 {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.waiting p {
+  margin: 6px 0;
+}
+
+.hand-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 8px 4px 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-weight: 600;
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 8px;
+}
+
+.hand {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 12px;
+}
+
+/* Cards: real playing-card look — solid white face, sharp border. */
+.card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 14px 16px;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
+}
+.card-name {
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+.card-rule {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.error {
+  color: var(--warn);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 18px 12px 32px;
+  }
+  .app-header h1 {
+    font-size: 24px;
+  }
+  .room-bar {
+    font-size: 14px;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .room-bar > .room-bar-item:first-child {
+    flex: 1 0 100%;
+  }
+  .code-pill {
+    margin-left: 0;
+    font-size: 20px;
+    letter-spacing: 6px;
+    padding: 6px 12px;
+  }
+  .room-bar button.ghost {
+    margin-left: auto;
+  }
+  .divider::before,
+  .divider::after {
+    width: 40px;
+  }
+  .card {
+    min-height: 170px;
+    padding: 12px 12px 14px;
+  }
+  .card-name {
+    font-size: 16px;
+  }
+  .share-hint {
+    font-size: 13px;
+  }
+}
+
